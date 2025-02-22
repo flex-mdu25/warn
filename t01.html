@@ -21,35 +21,55 @@
       <p>กรุณารอสักครู่<br>wait...</p>
     </div>
 
-    <script src="https://static.line-scdn.net/liff/edge/2.23/sdk.js" charset="utf-8"></script>
+    <script src="https://static.line-scdn.net/liff/edge/2.23/sdk.js" charset="utf-8" onerror="handleLiffLoadError()"></script>
     <script>
+      function handleLiffLoadError() {
+        Swal.fire({
+          icon: 'error',
+          title: 'เกิดข้อผิดพลาด',
+          text: 'ไม่สามารถโหลด LIFF SDK ได้ กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต'
+        });
+      }
+
+      function hideLoading() {
+        document.querySelector('.loading-container').style.display = 'none';
+      }
+
       window.onload = function() {
         console.log('Starting LIFF Initialization...');
         console.log('LIFF ID: 2006945143-q6jK8a9g');
         console.log('Current URL:', window.location.href);
 
-        liff.init({
+        const initPromise = liff.init({
           liffId: "2006945143-q6jK8a9g"
-        })
-        .then(() => {
-          console.log('LIFF Initialized successfully');
-          if (liff.isLoggedIn()) {
-            console.log('User is logged in');
-            dolink();
-          } else {
-            console.log('User is not logged in, redirecting to login');
-            liff.login();
-          }
-        })
-        .catch((err) => {
-          console.error('LIFF Initialization failed:', err.code, err.message);
-          Swal.fire({
-            icon: 'error',
-            title: 'เกิดข้อผิดพลาด',
-            text: `ไม่สามารถเริ่มต้น LIFF ได้: ${err.message} (Code: ${err.code})`,
-            footer: 'กรุณาตรวจสอบ LIFF ID และ Endpoint URL'
-          });
         });
+
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('LIFF Initialization timed out')), 10000)
+        );
+
+        Promise.race([initPromise, timeoutPromise])
+          .then(() => {
+            console.log('LIFF Initialized successfully');
+            hideLoading();
+            if (liff.isLoggedIn()) {
+              console.log('User is logged in');
+              dolink();
+            } else {
+              console.log('User is not logged in, redirecting to login');
+              liff.login();
+            }
+          })
+          .catch((err) => {
+            console.error('LIFF Initialization failed:', err.code, err.message);
+            hideLoading();
+            Swal.fire({
+              icon: 'error',
+              title: 'เกิดข้อผิดพลาด',
+              text: `ไม่สามารถเริ่มต้น LIFF ได้: ${err.message || 'ไม่ทราบสาเหตุ'} (Code: ${err.code || 'N/A'})`,
+              footer: 'กรุณาตรวจสอบ LIFF ID และ Endpoint URL'
+            });
+          });
       };
 
       function getParameterByName(name, url) {
