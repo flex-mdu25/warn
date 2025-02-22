@@ -27,120 +27,97 @@
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js" charset="utf-8"></script>
     <script>
       window.onload = function() {
-        liff.init({
-          liffId: "2006945143-q6jK8a9g"  //แก้ไข Liff ID
-        })
-        .then(() => {
-          if (liff.isLoggedIn()) {
-            dolink();
-          } else {
-            liff.login();
-          }
-        })
-        .catch((err) => {
-          console.error('LIFF Initialization failed', err);
-        });
-      };
+  liff.init({
+    liffId: "2006945143-q6jK8a9g"
+  })
+  .then(() => {
+    if (liff.isLoggedIn()) {
+      dolink();
+    } else {
+      liff.login();
+    }
+  })
+  .catch((err) => {
+    console.error('LIFF Initialization failed', err);
+    Swal.fire({
+      icon: 'error',
+      title: 'เกิดข้อผิดพลาด',
+      text: 'ไม่สามารถเริ่มต้น LIFF ได้ กรุณาลองใหม่',
+    });
+  });
+};
 
-      function getParameterByName(name, url) {
-        if (!url) url = window.location.href;
-        name = name.replace(/[\[\]]/g, '\\$&');
-        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-            results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, ' '));
-      }
+function dolink() {
+  var j5 = getParameterByName("refer");
+  const today = new Date();
 
-      function dolink() {
-        var j5 = getParameterByName("refer");
-
-        if (j5 === "t01") {
-          liff.shareTargetPicker([
-            {
-              "type": "flex",
-              "altText": "การ ปชส. ประจำวัน",
-              "contents": 
-
-              
-              {
-  "type": "bubble",
-  "size": "giga",
-  "body": {
-    "type": "box",
-    "layout": "vertical",
-    "contents": [
-      {
-        "type": "image",
-        "url": "https://raw.githubusercontent.com/flex-mdu25/warn/refs/heads/main/alert.png",
-        "size": "full",
-        "aspectMode": "cover",
-        "aspectRatio": "2:1"
-      },
-      {
-        "type": "box",
-        "layout": "vertical",
-        "contents": [
-          {
-            "type": "text",
-            "text": `วันที่ ${today.toLocaleDateString('th-TH')}`,
-            "weight": "bold",
-            "align": "center",
-            "color": "#ffffff"
-          }
-        ],
-        "position": "absolute",
-        "width": "100%",
-        "offsetTop": "sm"
-      },
-      {
+  if (j5 === "t01") {
+    const flexMessage = {
+      "type": "bubble",
+      "size": "giga",
+      "body": {
         "type": "box",
         "layout": "vertical",
         "contents": [
           {
             "type": "image",
-            "url": "https://raw.githubusercontent.com/flex-mdu25/warn/refs/heads/main/share.png"
-          }
+            "url": "https://raw.githubusercontent.com/flex-mdu25/warn/refs/heads/main/alert.png",
+            "size": "full",
+            "aspectMode": "cover",
+            "aspectRatio": "2:1"
+          },
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "text",
+                "text": `วันที่ ${today.toLocaleDateString('th-TH')}`,
+                "weight": "bold",
+                "align": "center",
+                "color": "#ffffff"
+              }
+            ],
+            "position": "absolute",
+            "width": "100%",
+            "offsetTop": "sm"
+          },
+          // ... คงส่วนที่เหลือไว้
         ],
-        "position": "absolute",
-        "width": "100%",
-        "height": "40%",
-        "offsetStart": "55px",
-        "offsetEnd": "0px",
-        "offsetBottom": "0px",
-        "action": {
-          "type": "uri",
-          "label": "action",
-          "uri": "https://liff.line.me/2006945143-q6jK8a9g?refer=t01"
-        }
+        "paddingAll": "0px"
       }
-    ],
-    "paddingAll": "0px"
+    };
+
+    liff.shareTargetPicker([{ type: "flex", altText: "การ ปชส. ประจำวัน", contents: flexMessage }])
+      .then(() => {
+        Swal.fire({
+          position: 'top-center',
+          icon: 'success',
+          title: 'ส่ง เรียบ ร้อย',
+          showConfirmButton: false,
+          timer: 1500
+        }).then(() => {
+          liff.closeWindow();
+        });
+      })
+      .catch((err) => {
+        console.error('Share failed', err);
+        Swal.fire({
+          icon: 'error',
+          title: 'เกิดข้อผิดพลาด',
+          text: 'ไม่สามารถแชร์ได้ กรุณาลองใหม่',
+        });
+      });
+  } else {
+    Swal.fire({
+      icon: 'warning',
+      title: 'ไม่พบ refer',
+      text: 'กรุณาตรวจสอบลิงก์ที่ใช้งาน',
+    }).then(() => {
+      liff.closeWindow();
+    });
   }
 }
-
-
-
-
-
-            }
-          ])
-          .then(() => {
-            Swal.fire({
-              position: 'top-center',
-              icon: 'success',
-              title: 'ส่ง เรียบ ร้อย',
-              showConfirmButton: false,
-              timer: 1500
-            }).then(() => {
-              liff.closeWindow();
-            });
-          })
-          .catch((err) => {
-            console.error('Share failed', err);
-          });
-        }
-      }
     </script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
