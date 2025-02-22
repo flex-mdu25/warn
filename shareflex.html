@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Share Flex Message</title>
+  <script src="https://static.line-scdn.net/liff/edge/versions/2.22.3/sdk.js"></script>
+</head>
+<body>
+  <button id="shareButton">Share Flex Message</button>
+
+  <script>
+    async function initializeLiff() {
+      await liff.init({ liffId: 'YOUR_LIFF_ID' });
+      if (!liff.isLoggedIn()) {
+        liff.login();
+      }
+    }
+
+    async function shareFlexMessage() {
+      const flexMessage = {
+        type: "flex",
+        altText: "This is a Flex Message",
+        contents: {
+          type: "bubble",
+          body: {
+            type: "box",
+            layout: "vertical",
+            contents: [
+              {
+                type: "text",
+                text: "Hello, World!",
+                weight: "bold",
+                size: "xl"
+              }
+            ]
+          }
+        }
+      };
+
+      await liff.shareTargetPicker([
+        {
+          type: "flex",
+          altText: "This is a Flex Message",
+          contents: flexMessage.contents
+        }
+      ]);
+
+      // ส่งข้อมูลไปยัง Google Apps Script (Optional)
+      const groupId = await liff.getContext().groupId; // เก็บ groupId หากต้องการ
+      fetch('YOUR_GOOGLE_APPS_SCRIPT_URL', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ groupId })
+      });
+    }
+
+    document.getElementById('shareButton').addEventListener('click', shareFlexMessage);
+    initializeLiff();
+  </script>
+</body>
+</html>
