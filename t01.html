@@ -24,6 +24,7 @@
     <script src="https://static.line-scdn.net/liff/edge/2.23/sdk.js" charset="utf-8" onerror="handleLiffLoadError()"></script>
     <script>
       function handleLiffLoadError() {
+        hideLoading();
         Swal.fire({
           icon: 'error',
           title: 'เกิดข้อผิดพลาด',
