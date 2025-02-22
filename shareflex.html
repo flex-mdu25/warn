@@ -46,7 +46,7 @@
 
       // ส่งข้อมูลไปยัง Google Apps Script (Optional)
       const groupId = await liff.getContext().groupId; // เก็บ groupId หากต้องการ
-      fetch('YOUR_GOOGLE_APPS_SCRIPT_URL', {
+      fetch('https://script.google.com/macros/s/AKfycbxgu6hZFLaHazCptEV4mYKqPReV79D5E5A0X2CS_U31XHNgiS7Or4OYHzBqCePCy1BoFQ/exec', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
