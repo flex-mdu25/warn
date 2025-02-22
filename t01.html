@@ -102,60 +102,132 @@
 
         if (j5 === "t01") {
           const flexMessage = {
-            "type": "bubble",
-            "size": "giga",
-            "body": {
-              "type": "box",
-              "layout": "vertical",
-              "contents": [
-                {
-                  "type": "image",
-                  "url": "https://raw.githubusercontent.com/flex-mdu25/warn/refs/heads/main/alert.png",
-                  "size": "full",
-                  "aspectMode": "cover",
-                  "aspectRatio": "2:1"
-                },
-                {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": `วันที่ ${today.toLocaleDateString('th-TH')}`,
-                      "weight": "bold",
-                      "align": "center",
-                      "color": "#ffffff"
-                    }
-                  ],
-                  "position": "absolute",
-                  "width": "100%",
-                  "offsetTop": "sm"
-                },
-                {
-                  "type": "box",
-                  "layout": "vertical",
-                  "contents": [
-                    {
-                      "type": "image",
-                      "url": "https://raw.githubusercontent.com/flex-mdu25/warn/refs/heads/main/share.png"
-                    }
-                  ],
-                  "position": "absolute",
-                  "width": "100%",
-                  "height": "40%",
-                  "offsetStart": "55px",
-                  "offsetEnd": "0px",
-                  "offsetBottom": "0px",
-                  "action": {
-                    "type": "uri",
-                    "label": "action",
-                    "uri": "https://liff.line.me/2006945143-q6jK8a9g?refer=t01"
+  "type": "bubble",
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "image",
+        "url": "https://developers-resource.landpress.line.me/fx/clip/clip3.jpg",
+        "size": "full",
+        "aspectMode": "cover",
+        "aspectRatio": "1:1",
+        "gravity": "center"
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [],
+        "position": "absolute",
+        "background": {
+          "type": "linearGradient",
+          "angle": "0deg",
+          "endColor": "#00000000",
+          "startColor": "#00000099"
+        },
+        "width": "100%",
+        "height": "40%",
+        "offsetBottom": "0px",
+        "offsetStart": "0px",
+        "offsetEnd": "0px"
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "contents": [
+          {
+            "type": "box",
+            "layout": "vertical",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "horizontal",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": "Brown Grand Hotel",
+                    "size": "xl",
+                    "color": "#ffffff"
                   }
-                }
-              ],
-              "paddingAll": "0px"
-            }
-          };
+                ]
+              },
+              {
+                "type": "box",
+                "layout": "baseline",
+                "contents": [
+                  {
+                    "type": "icon",
+                    "url": "https://developers-resource.landpress.line.me/fx/img/review_gold_star_28.png"
+                  },
+                  {
+                    "type": "icon",
+                    "url": "https://developers-resource.landpress.line.me/fx/img/review_gold_star_28.png"
+                  },
+                  {
+                    "type": "icon",
+                    "url": "https://developers-resource.landpress.line.me/fx/img/review_gold_star_28.png"
+                  },
+                  {
+                    "type": "icon",
+                    "url": "https://developers-resource.landpress.line.me/fx/img/review_gold_star_28.png"
+                  },
+                  {
+                    "type": "icon",
+                    "url": "https://developers-resource.landpress.line.me/fx/img/review_gray_star_28.png"
+                  },
+                  {
+                    "type": "text",
+                    "text": "4.0",
+                    "color": "#a9a9a9"
+                  }
+                ],
+                "spacing": "xs"
+              },
+              {
+                "type": "box",
+                "layout": "horizontal",
+                "contents": [
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "¥62,000",
+                        "color": "#ffffff",
+                        "size": "md",
+                        "flex": 0,
+                        "align": "end"
+                      },
+                      {
+                        "type": "text",
+                        "text": "¥82,000",
+                        "color": "#a9a9a9",
+                        "decoration": "line-through",
+                        "size": "sm",
+                        "align": "end"
+                      }
+                    ],
+                    "flex": 0,
+                    "spacing": "lg"
+                  }
+                ]
+              }
+            ],
+            "spacing": "xs"
+          }
+        ],
+        "position": "absolute",
+        "offsetBottom": "0px",
+        "offsetStart": "0px",
+        "offsetEnd": "0px",
+        "paddingAll": "20px"
+      }
+    ],
+    "paddingAll": "0px"
+  }
+};
 
           console.log('Sharing Flex Message...');
           liff.shareTargetPicker([{ type: "flex", altText: "แจ้งเตือนลงเวลาปฏิบัติงาน ประจำวัน", contents: flexMessage }])
