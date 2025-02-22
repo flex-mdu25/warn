@@ -33,6 +33,8 @@
   <!-- LIFF SDK -->
   <script src="https://static.line-scdn.net/liff/edge/versions/2.22.3/sdk.js"></script>
   <script>
+    const YOUR_GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzq7gbk9hFqbV8NAcCQIqS4SfFCOoQXZ64RRTQhREPyC363LZiJQECxD-bly_sdB-zzww/exec'; // แทนที่ด้วย URL ของ Google Apps Script Web App
+
     async function initializeLiff() {
       await liff.init({ liffId: '2006945143-9xL2klKP' });
       if (!liff.isLoggedIn()) {
@@ -77,19 +79,35 @@
           }
         ]);
 
-        // แจ้งเตือนสำเร็จ
-        Swal.fire({
-          icon: 'success',
-          title: 'สำเร็จ!',
-          text: 'แชร์ Flex Message เรียบร้อยแล้ว',
-          confirmButtonText: 'ตกลง'
+        // ส่งข้อมูลไปยัง Google Apps Script
+        const groupId = liff.getContext().groupId; // เก็บ groupId
+        const response = await fetch(YOUR_GOOGLE_APPS_SCRIPT_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ groupId })
         });
+
+        const result = await response.json();
+
+        if (result.status === 'success') {
+          // แจ้งเตือนสำเร็จ
+          Swal.fire({
+            icon: 'success',
+            title: 'สำเร็จ!',
+            text: 'แชร์ Flex Message และบันทึกข้อมูลเรียบร้อยแล้ว',
+            confirmButtonText: 'ตกลง'
+          });
+        } else {
+          throw new Error('ไม่สามารถบันทึกข้อมูลได้');
+        }
       } catch (error) {
         // แจ้งเตือนข้อผิดพลาด
         Swal.fire({
           icon: 'error',
           title: 'เกิดข้อผิดพลาด',
-          text: 'ไม่สามารถแชร์ Flex Message ได้',
+          text: 'ไม่สามารถแชร์ Flex Message หรือบันทึกข้อมูลได้',
           confirmButtonText: 'ตกลง'
         });
       } finally {
