@@ -21,7 +21,7 @@
       <p>กรุณารอสักครู่<br>wait...</p>
     </div>
 
-    <script src="https://static.line-scdn.net/liff/edge/2.23/sdk.js" charset="utf-8"></script>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js" charset="utf-8"></script>
     <script>
       window.onload = function() {
         liff.init({
@@ -35,11 +35,11 @@
           }
         })
         .catch((err) => {
-          console.error('LIFF Initialization failed', err);
+          console.error('LIFF Initialization failed:', err.code, err.message);
           Swal.fire({
             icon: 'error',
             title: 'เกิดข้อผิดพลาด',
-            text: 'ไม่สามารถเริ่มต้น LIFF ได้ กรุณาลองใหม่',
+            text: `ไม่สามารถเริ่มต้น LIFF ได้: ${err.message} (Code: ${err.code})`,
           });
         });
       };
@@ -128,7 +128,7 @@
               });
             })
             .catch((err) => {
-              console.error('Share failed', err.message);
+              console.error('Share failed:', err.message);
               Swal.fire({
                 icon: 'error',
                 title: 'เกิดข้อผิดพลาด',
