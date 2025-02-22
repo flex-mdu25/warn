@@ -21,16 +21,23 @@
       <p>กรุณารอสักครู่<br>wait...</p>
     </div>
 
-    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js" charset="utf-8"></script>
+    <script src="https://static.line-scdn.net/liff/edge/2.23/sdk.js" charset="utf-8"></script>
     <script>
       window.onload = function() {
+        console.log('Starting LIFF Initialization...');
+        console.log('LIFF ID: 2006945143-q6jK8a9g');
+        console.log('Current URL:', window.location.href);
+
         liff.init({
           liffId: "2006945143-q6jK8a9g"
         })
         .then(() => {
+          console.log('LIFF Initialized successfully');
           if (liff.isLoggedIn()) {
+            console.log('User is logged in');
             dolink();
           } else {
+            console.log('User is not logged in, redirecting to login');
             liff.login();
           }
         })
@@ -40,6 +47,7 @@
             icon: 'error',
             title: 'เกิดข้อผิดพลาด',
             text: `ไม่สามารถเริ่มต้น LIFF ได้: ${err.message} (Code: ${err.code})`,
+            footer: 'กรุณาตรวจสอบ LIFF ID และ Endpoint URL'
           });
         });
       };
@@ -57,6 +65,7 @@
       function dolink() {
         var j5 = getParameterByName("refer");
         const today = new Date();
+        console.log('Refer parameter:', j5);
 
         if (j5 === "t01") {
           const flexMessage = {
@@ -115,8 +124,10 @@
             }
           };
 
+          console.log('Sharing Flex Message...');
           liff.shareTargetPicker([{ type: "flex", altText: "แจ้งเตือนลงเวลาปฏิบัติงาน ประจำวัน", contents: flexMessage }])
             .then(() => {
+              console.log('Share successful');
               Swal.fire({
                 position: 'top-center',
                 icon: 'success',
@@ -136,6 +147,7 @@
               });
             });
         } else {
+          console.log('No valid refer parameter');
           Swal.fire({
             icon: 'warning',
             title: 'ไม่พบ refer',
